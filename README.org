@@ -1,0 +1,3 @@
+* Prerequisite
+- Install GCC
+- Install sqlite3
