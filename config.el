@@ -32,12 +32,16 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
-
+(after! org
+  (setq org-agenda-files '("~/org/")))
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
-(setq typescript-fmt-tool 'prettier)
 
+;; Typescript
+;;(setq typescript-fmt-tool 'prettier)
+
+;; LSP
 (defadvice! fix-lookup-handlers (ret)
   :filter-return '(+lsp-lookup-references-handler +lsp-lookup-definition-handler)
   (when ret 'deferred))
