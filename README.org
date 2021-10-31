@@ -1,3 +1,4 @@
 * Prerequisite
 - Install GCC
 - Install sqlite3
+- Install graphviz
