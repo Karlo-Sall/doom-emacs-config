@@ -7,7 +7,7 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Karlo Sall"
-      user-mail-address "ksa@whiteaway.com")
+      user-mail-address "k@rlo.dk")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -27,11 +27,53 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-vibrant)
+(setq doom-theme 'doom-solarized-light)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+
+(cl-defun my/org-roam-node--filter-by-tags (node &optional included-tags excluded-tags)
+  "Filter org-roam-node by tags."
+  (let* ((tags (org-roam-node-tags node))
+         (file-path (org-roam-node-file node))
+         (rel-file-path (f-relative file-path org-roam-directory))
+         (parent-directories (butlast (f-split rel-file-path)))
+         (tags (cl-union tags parent-directories)))
+    (if (or
+         ;; (and included-tags (cl-notevery (lambda (x) (cl-member x tags :test #'string=)) included-tags))
+         (and included-tags (not (cl-intersection included-tags tags :test #'string=)))
+         (and excluded-tags (cl-intersection excluded-tags tags :test #'string=))
+         ) nil t)))
+
+(cl-defun my/org-roam-node-find (included-tags excluded-tags)
+  "Modded org-roam-node-find which filters nodes using tags."
+  (interactive)
+  (org-roam-node-find nil nil
+                      (lambda (node) (my/org-roam-node--filter-by-tags node included-tags excluded-tags))))
+
+(cl-defun my/org-roam-node-insert (included-tags excluded-tags)
+  "Modded org-roam-node-insert which filters nodes using tags."
+  (interactive)
+  (org-roam-node-insert
+   (lambda (node) (my/org-roam-node--filter-by-tags node included-tags excluded-tags))))
+
+(map!
+ :leader
+ (:prefix ("r" . "org-roam")
+  "f" #'(lambda () (interactive) (my/org-roam-node-find nil '("daily" "captures" "dnd")))
+  "i" #'(lambda () (interactive) (my/org-roam-node-insert nil '("daily" "captures" "dnd")))
+  "F" #'(lambda () (interactive) (my/org-roam-node-find '("daily" "captures") nil))
+  "I" #'(lambda () (interactive) (my/org-roam-node-insert '("daily" "captures") nil))
+  "d" #'(lambda () (interactive) (my/org-roam-node-find'("dnd") nil))
+  "D" #'(lambda () (interactive) (my/org-roam-node-insert '("dnd") nil))
+ ))
+
+;; ORG ROAM
+;; Consider this for filtering tags: https://org-roam.discourse.group/t/filter-org-roam-node-find-insert-using-tags-and-folders/1907
+;;(setq org-roam-db-node-include-function
+;;      (defun dotfiles/org-roam-include ()
+;;        (not (member "dnd" (org-get-tags)))))
 
 (defun my/org-roam-project-finalize-hook ()
   "Adds the captured project file to `org-agenda-files' if the
@@ -66,6 +108,13 @@ capture was not aborted."
                                   :if-new (file+head "Inbox.org" "#+title: Inbox\n")))))
 
 (global-set-key (kbd "C-c n b") #'my/org-roam-capture-inbox)
+
+(defun my/org-roam-inser-daily-time-reg ()
+  (interactive)
+  (org-roam-capture- :node (org-roam-node-create)
+                     :templates '(("i" "inbox" plain "* TODO Time %t\n** CAPEX\n** KTLO\n** BAU\n** OPEX\n** Lunch"
+                                  :if-new (file+head "Inbox.org" "#+title: Inbox\n")))))
+
 
 
 (defun my/org-roam-capture-task ()
