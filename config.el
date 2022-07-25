@@ -61,12 +61,14 @@
 (map!
  :leader
  (:prefix ("r" . "org-roam")
-  "f" #'(lambda () (interactive) (my/org-roam-node-find nil '("daily" "captures" "dnd")))
-  "i" #'(lambda () (interactive) (my/org-roam-node-insert nil '("daily" "captures" "dnd")))
+  "f" #'(lambda () (interactive) (my/org-roam-node-find nil '("daily" "captures" "dnd" "confidential")))
+  "i" #'(lambda () (interactive) (my/org-roam-node-insert nil '("daily" "captures" "dnd" "confidential")))
   "F" #'(lambda () (interactive) (my/org-roam-node-find '("daily" "captures") nil))
   "I" #'(lambda () (interactive) (my/org-roam-node-insert '("daily" "captures") nil))
   "d" #'(lambda () (interactive) (my/org-roam-node-find'("dnd") nil))
   "D" #'(lambda () (interactive) (my/org-roam-node-insert '("dnd") nil))
+  "c" #'(lambda () (interactive) (my/org-roam-node-find'("confidential") nil))
+  "C" #'(lambda () (interactive) (my/org-roam-node-insert '("confidential") nil))
  ))
 
 ;; ORG ROAM
