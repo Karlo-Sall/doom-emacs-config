@@ -139,6 +139,8 @@ capture was not aborted."
                         "#+title: ${title}\n#+category: ${title}\n#+filetags: :${title}:")
      :unnarrowed t)))
 
+(global-set-key (kbd "C-c r t") 'org-roam-dailies-goto-today)
+
 (defun my/org-roam-copy-todo-to-today ()
   (interactive)
   (let ((org-refile-keep t) ;; Set this to nil to delete the original!
