@@ -37,6 +37,11 @@
                                     :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                                        " ${title}\n#+category: ${title}\n#+filetags: :${title}:")
                                     :unnarrowed t)))
+;; makes org Agenda look for TODOs in roam and daily directory
+(after! org
+  (setq org-agenda-files (append'("~/org/roam"
+                                  "~/org/roam/daily"))))
+
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
