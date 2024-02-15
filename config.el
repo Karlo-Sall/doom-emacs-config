@@ -29,19 +29,39 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-feather-light)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
-(setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                                       " ${title}\n#+category: ${title}\n#+filetags: :${title}:")
-                                    :unnarrowed t)))
-;; makes org Agenda look for TODOs in roam and daily directory
+;; org stuff
 (after! org
-  (setq org-agenda-files (append'("~/org/roam"
-                                  "~/org/roam/daily"))))
+  (setq
+   ;; sets org dir
+   org-directory "~/org/"
 
+   ;; sane TODO statuses
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)"))
+   org-todo-keyword-faces
+   '(("TODO" :foreground "#7c7c75" :weight normal :underline t)
+     ("INPROGRESS" :foreground "0098dd" :weight normal :underline t)
+     ("WAITING" :foreground "#9f7efe" :weight normal :underline t)
+     ("DONE" :foreground "#50a14f" :weight normal :underline t)
+     ("CANCELLED" :foreground "#ff6480" :weight normal :underline t))
+
+   ;; when a todo is done, add a time mark
+   org-log-done 'time
+
+   ;; makes org Agenda look for TODOs in roam and daily directory
+   org-agenda-files (append'("~/org/roam"
+                             "~/org/roam/daily")))
+  (setq
+   ;; fixes daily notes
+   org-roam-dailies-capture-templates
+   '(("d" "default" plain "%?"
+      :target (file+head "%<%Y-%m-%d>.org"
+                         " %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))
+
+   ;; capture template
+   org-roam-capture-templates '(("d" "default" plain "%?"
+                                 :target (file+head "%<%Y%m%d>-${slug}.org"
+                                                    " ${title}\n#+category: ${title}\n#+filetags: :${title}:")
+                                 :unnarrowed t))))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
