@@ -53,15 +53,17 @@
   (setq
    ;; fixes daily notes
    org-roam-dailies-capture-templates
-   '(("d" "default" plain "%?"
+   '(("d" "template for daily captures" entry ""
       :target (file+head "%<%Y-%m-%d>.org"
                          " %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))
-
    ;; capture template
-   org-roam-capture-templates '(("d" "default" plain "%?"
+   org-roam-capture-templates '(("d" "default template for capture files" entry ""
                                  :target (file+head "%<%Y%m%d>-${slug}.org"
-                                                    " ${title}\n#+category: ${title}\n#+filetags: :${title}:")
-                                 :unnarrowed t))))
+                                                    " ${title}\n#+category: ${title}\n#+filetags: :${title}:\n")
+                                 :unnarrowed t)
+                                ("t" "Add TODO to today" entry "* TODO %?"
+                                 :target (file+head "%<%Y-%m-%d>.org"
+                                                    " %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
