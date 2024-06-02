@@ -29,6 +29,10 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-feather-light)
 
+;; rust
+(after! rustic
+  (setq rustic-lsp-server 'rls))
+
 ;; org stuff
 (after! org
   (setq
@@ -55,19 +59,28 @@
    org-roam-dailies-capture-templates
    '(("d" "template for daily captures" entry ""
       :target (file+head "%<%Y-%m-%d>.org"
-                         " %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))
+                         "#+title: %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))
    ;; capture template
    org-roam-capture-templates '(("d" "default template for capture files" entry ""
                                  :target (file+head "%<%Y%m%d>-${slug}.org"
-                                                    " ${title}\n#+category: ${title}\n#+filetags: :${title}:\n")
+                                                    "#+title: ${title}\n#+category: ${title}\n#+filetags: :${title}:\n")
                                  :unnarrowed t)
                                 ("t" "Add TODO to today" entry "* TODO %?"
                                  :target (file+head "%<%Y-%m-%d>.org"
-                                                    " %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))))
+                                                    "#+title: %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
+
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
 ;; Typescript
 ;;(setq typescript-fmt-tool 'prettier)
