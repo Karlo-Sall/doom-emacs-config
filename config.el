@@ -21,8 +21,8 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "monospace" :size 14 :weight 'semi-light)
-      doom-variable-pitch-font (font-spec :family "sans" :size 14))
+;;(setq doom-font (font-spec :family "monospace" :size 14 :weight 'semi-light)
+;;      doom-variable-pitch-font (font-spec :family "sans" :size 14))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -30,9 +30,10 @@
 (setq doom-theme 'doom-feather-light)
 
 ;; rust
-(after! rustic
-  (setq rustic-lsp-server 'rls))
+;;(after! rustic
+;;  (setq rustic-lsp-server 'rls))
 
+(setq calendar-week-start-day 1)
 ;; org stuff
 (after! org
   (setq
@@ -65,7 +66,7 @@
                                  :target (file+head "%<%Y%m%d>-${slug}.org"
                                                     "#+title: ${title}\n#+category: ${title}\n#+filetags: :${title}:\n")
                                  :unnarrowed t)
-                                ("t" "Add TODO to today" entry "* TODO %?"
+                                ("t" "Add TODO" entry "** TODO %?"
                                  :target (file+head "%<%Y-%m-%d>.org"
                                                     "#+title: %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))))
 
@@ -81,7 +82,7 @@
               ("TAB" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
-
+(setq exec-path (append exec-path '("~/.nvm/versions/node/v22.7.0/bin")))
 ;; Typescript
 ;;(setq typescript-fmt-tool 'prettier)
 

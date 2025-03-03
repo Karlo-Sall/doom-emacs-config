@@ -20,6 +20,7 @@
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(objed-cursor-color "#D70000")
  '(org-agenda-files '("~/org/roam/daily/2024-02-13.org"))
+ '(package-selected-packages '(exec-path-from-shell))
  '(pdf-view-midnight-colors (cons "#0F1019" "#F5F5F9"))
  '(rustic-ansi-faces
    ["#F5F5F9" "#D70000" "#005F00" "#AF8700" "#1F55A0" "#AF005F" "#007687" "#0F1019"])
