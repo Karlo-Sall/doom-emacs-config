@@ -34,7 +34,28 @@
 ;;  (setq rustic-lsp-server 'rls))
 
 (setq calendar-week-start-day 1)
+
+
 ;; org stuff
+(defun my/org-roam-copy-todo-to-today ()
+
+  (interactive)
+  (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+        (org-roam-dailies-capture-templates
+         '(("t" "tasks" entry "%?"
+            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+        (org-after-refile-insert-hook #'save-buffer)
+        today-file
+        pos)
+    (save-window-excursion
+      (org-roam-dailies-capture-today t)
+      (setq today-file (buffer-file-name))
+      (setq pos (point)))
+    ;; Only refile if the target file is different than the current file
+    (unless (equal (file-truename today-file)
+                   (file-truename (buffer-file-name)))
+      (org-refile nil nil (list "Tasks" today-file nil pos)))))
+
 (after! org
   (setq
    ;; sets org dir
@@ -55,6 +76,10 @@
    ;; makes org Agenda look for TODOs in roam and daily directory
    org-agenda-files (append'("~/org/roam"
                              "~/org/roam/daily")))
+  (add-to-list 'org-after-todo-state-change-hook
+               (lambda ()
+                 (when (equal org-state "DONE")
+                   (my/org-roam-copy-todo-to-today))))
   (setq
    ;; fixes daily notes
    org-roam-dailies-capture-templates
