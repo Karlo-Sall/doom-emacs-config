@@ -104,15 +104,16 @@
 (setq display-line-numbers-type 'relative)
 
 ;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  (copilot-mode . (lambda ()
-                    (setq-local copilot--indent-warning-printed-p t)))
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+(when (eq system-type 'darwin)
+  (use-package! copilot
+    :hook (prog-mode . copilot-mode)
+    (copilot-mode . (lambda ()
+                      (setq-local copilot--indent-warning-printed-p t)))
+    :bind (:map copilot-completion-map
+                ("<tab>" . 'copilot-accept-completion)
+                ("TAB" . 'copilot-accept-completion)
+                ("C-TAB" . 'copilot-accept-completion-by-word)
+                ("C-<tab>" . 'copilot-accept-completion-by-word))))
 (setq exec-path (append exec-path '("~/.nvm/versions/node/v22.7.0/bin")))
 ;; Typescript
 ;;(setq typescript-fmt-tool 'prettier)
