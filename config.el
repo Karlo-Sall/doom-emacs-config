@@ -80,20 +80,24 @@
    ;; makes org Agenda look for TODOs in roam and daily directory
    org-agenda-files (append'("~/org/roam"
                              "~/org/roam/daily")))
+
+  (setq org-roam-graph-link-hidden-types '("file"
+					   "http"
+					   "https" 
+					   "fuzzy"))
+
   (setq
    ;; fixes daily notes
    org-roam-dailies-capture-templates
    '(("d" "template for daily captures" entry ""
-      :target (file+head "%<%Y-%m-%d>.org"
+      :target (file+head "daily_%<%Y-%m-%d>.org"
                          "#+title: %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))
    ;; capture template
    org-roam-capture-templates '(("d" "default template for capture files" entry ""
                                  :target (file+head "%<%Y%m%d>-${slug}.org"
                                                     "#+title: ${title}\n#+category: ${title}\n#+filetags: :${title}:\n")
-                                 :unnarrowed t)
-                                ("t" "Add TODO" entry "** TODO %?"
-                                 :target (file+head "%<%Y-%m-%d>.org"
-                                                    "#+title: %<%Y-%m-%d>\n#+filetags: :daily:%<%Y-%m-%d>:\n")))))
+                                 :unnarrowed t))))
+
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -102,6 +106,8 @@
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
+  (copilot-mode . (lambda ()
+                    (setq-local copilot--indent-warning-printed-p t)))
   :bind (:map copilot-completion-map
               ("<tab>" . 'copilot-accept-completion)
               ("TAB" . 'copilot-accept-completion)
